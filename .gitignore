@@ -19,3 +19,9 @@
 
 # Go workspace file
 go.work
+
+color-picker
+*.jpg
+*.jpeg
+*.png
+*.gif
