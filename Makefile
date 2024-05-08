@@ -24,3 +24,4 @@ build-darwin-arm64:
 
 clean:
 	rm color-picker
+	rm color-picker-*
