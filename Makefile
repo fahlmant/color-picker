@@ -23,5 +23,4 @@ build-darwin-arm64:
 	GOOS=darwin GOARCH=arm64 go build -o color-picker-darwin-arm64
 
 clean:
-	rm color-picker
 	rm color-picker-*
