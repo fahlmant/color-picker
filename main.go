@@ -56,12 +56,19 @@ func main() {
 	bmpImage, err := bmp.Decode(buf)
 	if err != nil {
 		fmt.Printf("Error: %+v\n", err)
+		return
 	}
 
-	for i := 0; i < 100; i++ {
-		for j := 0; j < 100; j++ {
+	imgConfig, _, err := goimage.Decode(bytes.NewReader(fileBytes))
+	if err != nil {
+		fmt.Printf("Img Config Error: %+v\n", err)
+		return
+	}
+
+	for i := 0; i < imgConfig.Bounds().Dx(); i++ {
+		for j := 0; j < imgConfig.Bounds().Dy(); j++ {
 			r, g, b, _ := bmpImage.At(i, j).RGBA()
-			fmt.Printf("#%x%x%x\n", uint8(r), uint8(g), uint8(b))
+			fmt.Printf("#%02x%02x%02x\n", uint32((float64(r) / 0xff)), uint32((float64(g) / 0xff)), uint32((float64(b) / 0xff)))
 		}
 	}
 
