@@ -68,7 +68,8 @@ func main() {
 	for i := 0; i < imgConfig.Bounds().Dx(); i++ {
 		for j := 0; j < imgConfig.Bounds().Dy(); j++ {
 			r, g, b, _ := bmpImage.At(i, j).RGBA()
-			fmt.Printf("#%02x%02x%02x\n", uint32((float64(r) / 0xff)), uint32((float64(g) / 0xff)), uint32((float64(b) / 0xff)))
+			// RGBA returns a number between 0 and 65535. 255 * 257 = 65535, so we divide by 257 to get a number between 0 and 255
+			fmt.Printf("#%02x%02x%02x\n", uint32((float64(r) / 257)), uint32((float64(g) / 257)), uint32((float64(b) / 257)))
 		}
 	}
 
