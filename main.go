@@ -9,6 +9,7 @@ import (
 	"image/png"
 	"net/http"
 	"os"
+	"sort"
 
 	"golang.org/x/image/bmp"
 )
@@ -65,12 +66,31 @@ func main() {
 		return
 	}
 
+	hexCodeFreq := make(map[string]int)
 	for i := 0; i < imgConfig.Bounds().Dx(); i++ {
 		for j := 0; j < imgConfig.Bounds().Dy(); j++ {
 			r, g, b, _ := bmpImage.At(i, j).RGBA()
 			// RGBA returns a number between 0 and 65535. 255 * 257 = 65535, so we divide by 257 to get a number between 0 and 255
-			fmt.Printf("#%02x%02x%02x\n", uint32((float64(r) / 257)), uint32((float64(g) / 257)), uint32((float64(b) / 257)))
+			hexCode := fmt.Sprintf("#%02x%02x%02x\n", uint32((float64(r) / 257)), uint32((float64(g) / 257)), uint32((float64(b) / 257)))
+			// Increases the counter for a hex string for each occurence
+			hexCodeFreq[hexCode] += 1
 		}
+	}
+
+	// Create a Sorted Hex Code Frequncy array and fill it with all hex codes by using the keys from the frequency map
+	sortedHexCodeFreq := make([]string, 0, len(hexCodeFreq))
+	for k := range hexCodeFreq {
+		sortedHexCodeFreq = append(sortedHexCodeFreq, k)
+	}
+
+	// Sort the frequency array by using the values from the frequency map
+	sort.Slice(sortedHexCodeFreq, func(i, j int) bool {
+		return hexCodeFreq[sortedHexCodeFreq[i]] < hexCodeFreq[sortedHexCodeFreq[j]]
+	})
+
+	// Print the top 10 hex values used in the image
+	for _, v := range sortedHexCodeFreq[len(sortedHexCodeFreq)-10:] {
+		fmt.Printf("%s", v)
 	}
 
 }
