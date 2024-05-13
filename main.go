@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"flag"
 	"fmt"
 	goimage "image"
 	"image/gif"
@@ -16,7 +17,16 @@ import (
 
 func main() {
 
-	fileBytes, err := os.ReadFile(os.Args[1])
+	numResults := flag.Int("results", 10, "Specify the number of results to return")
+	flag.Parse()
+
+	fileName := flag.Args()
+	if len(fileName) > 1 || len(fileName) == 0 {
+		fmt.Println("Expected one file, exiting")
+		return
+	}
+
+	fileBytes, err := os.ReadFile(fileName[0])
 	if err != nil {
 		// replace this with real error handling
 		panic(err.Error())
@@ -88,8 +98,13 @@ func main() {
 		return hexCodeFreq[sortedHexCodeFreq[i]] < hexCodeFreq[sortedHexCodeFreq[j]]
 	})
 
-	// Print the top 10 hex values used in the image
-	for _, v := range sortedHexCodeFreq[len(sortedHexCodeFreq)-10:] {
+	firstElementIndex := len(sortedHexCodeFreq) - *numResults
+	if firstElementIndex >= len(sortedHexCodeFreq) {
+		firstElementIndex = len(sortedHexCodeFreq)
+	}
+
+	// Print the top  N hex values used in the image
+	for _, v := range sortedHexCodeFreq[firstElementIndex:] {
 		fmt.Printf("%s", v)
 	}
 
