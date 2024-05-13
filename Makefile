@@ -22,5 +22,8 @@ build-darwin-amd64:
 build-darwin-arm64:
 	GOOS=darwin GOARCH=arm64 go build -o color-picker-darwin-arm64
 
+release:
+	goreleaser release --clean
+
 clean:
 	rm color-picker-*
