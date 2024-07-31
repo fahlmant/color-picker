@@ -18,7 +18,13 @@ func main() {
 
 	// Flag for specifying how many results to return. For example, --results 5 shows the top 5 hex values by pixel count
 	numResults := flag.Int("results", 16, "Specify the number of results to return")
+	version := flag.Bool("version", false, "Print version of the tool and exit")
 	flag.Parse()
+
+	if *version {
+		fmt.Println("v0.2.1")
+		os.Exit(0)
+	}
 
 	// Get file path
 	fileName := flag.Args()
